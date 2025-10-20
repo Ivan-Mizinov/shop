@@ -40,25 +40,32 @@
     </c:if>
 
     <c:if test="${not empty cart}">
-        <table>
-            <thead>
-            <tr>
-                <th>Название</th>
-                <th>Описание</th>
-                <th>Цена (руб.)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${cart}" var="product">
+        <form method="post" action="/shop/remove-from-cart">
+            <table>
+                <thead>
                 <tr>
-                    <td>${product.name}</td>
-                    <td>${product.description}</td>
-                    <td>${product.price}</td>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Цена (руб.)</th>
+                    <th>Действия</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-
+                </thead>
+                <tbody>
+                <c:forEach items="${cart}" var="product">
+                    <tr>
+                        <td>${product.name}</td>
+                        <td>${product.description}</td>
+                        <td>${product.price}</td>
+                        <td>
+                            <button type="submit" name="productId" value="${product.id}">
+                                Удалить
+                            </button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </form>
         <div class="total">
             Общая сумма:
             <c:set var="total" value="0" />

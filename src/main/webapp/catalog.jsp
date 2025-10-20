@@ -37,7 +37,7 @@
                 <div class="product-price">
                         ${product.price} ₽
                 </div>
-                <form action="/shop/add-to-cart" method="POST" style="margin-top: 10px;">
+                <form action="/shop/cart" method="POST" style="margin-top: 10px;">
                     <input type="hidden" name="productId" value="${product.id}">
                     <button type="submit">Добавить в корзину</button>
                 </form>

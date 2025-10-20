@@ -14,10 +14,12 @@ import javax.servlet.http.HttpSession;
 public class LoginAspect {
 
     @Pointcut("execution(* com.example.shop.servlets.LoginServlet.doPost(..))")
-    public void doLogging() {}
+    public void doLogging() {
+    }
 
     @Pointcut("execution(* com.example.shop.servlets.AddProductServlet.doPost(..))")
-    public void doAddProduct() {}
+    public void doAddProduct() {
+    }
 
     @Before("doLogging()")
     public void beforeLogging(JoinPoint joinPoint) {
