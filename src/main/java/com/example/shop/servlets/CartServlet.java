@@ -29,16 +29,23 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            cartService.addProduct(req, getServletContext());
-            resp.sendRedirect("/shop/catalog.jsp");
-        } catch (ServletException e) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Товар не найден");
+        String method = req.getParameter("_method");
+
+        if ("DELETE".equals(method)) {
+            doDelete(req, resp);
+        } else {
+            try {
+                cartService.addProduct(req, getServletContext());
+                resp.sendRedirect("/shop/catalog.jsp");
+            } catch (ServletException e) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Товар не найден");
+            }
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         cartService.removeProduct(req, resp);
+        resp.sendRedirect("/shop/cart");
     }
 }

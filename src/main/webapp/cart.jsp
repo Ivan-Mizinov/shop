@@ -33,50 +33,51 @@
     </style>
 </head>
 <body>
-    <h1>Корзина покупок</h1>
+<h1>Корзина покупок</h1>
 
-    <c:if test="${empty cart || cart.size() == 0}">
-        <p>Ваша корзина пуста</p>
-    </c:if>
+<c:if test="${empty cart || cart.size() == 0}">
+    <p>Ваша корзина пуста</p>
+</c:if>
 
-    <c:if test="${not empty cart}">
-        <form method="post" action="/shop/remove-from-cart">
-            <table>
-                <thead>
-                <tr>
-                    <th>Название</th>
-                    <th>Описание</th>
-                    <th>Цена (руб.)</th>
-                    <th>Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${cart}" var="product">
-                    <tr>
-                        <td>${product.name}</td>
-                        <td>${product.description}</td>
-                        <td>${product.price}</td>
-                        <td>
-                            <button type="submit" name="productId" value="${product.id}">
-                                Удалить
-                            </button>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </form>
-        <div class="total">
-            Общая сумма:
-            <c:set var="total" value="0" />
-            <c:forEach items="${cart}" var="product">
-                <c:set var="total" value="${total + product.price}" />
-            </c:forEach>
-                ${total} руб.
-        </div>
-    </c:if>
+<c:if test="${not empty cart}">
+    <table>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена (руб.)</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${cart}" var="product">
+            <tr>
+                <td>${product.name}</td>
+                <td>${product.description}</td>
+                <td>${product.price}</td>
+                <td>
+                    <form method="post" action="/shop/cart">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="productId" value="${product.id}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    </form>
+    <div class="total">
+        Общая сумма:
+        <c:set var="total" value="0"/>
+        <c:forEach items="${cart}" var="product">
+            <c:set var="total" value="${total + product.price}"/>
+        </c:forEach>
+            ${total} руб.
+    </div>
+</c:if>
 
-    <a href="/shop/catalog">Вернуться в каталог</a>
+<a href="/shop/catalog">Вернуться в каталог</a>
 
 </body>
 </html>

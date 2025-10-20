@@ -45,7 +45,6 @@ public class CartService {
         if (cart != null) {
             cart.removeProduct(productId);
             session.setAttribute("cart", cart);
-            resp.sendRedirect("/shop/cart");
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Корзина пуста");
         }
