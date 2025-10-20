@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'war'
+    id 'io.freefair.aspectj.post-compile-weaving' version '5.3.3.3'
 }
 
 group 'com.example'
@@ -26,6 +27,9 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    implementation 'org.aspectj:aspectjrt:1.9.6'
+
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
     compileOnly('javax.servlet:javax.servlet-api:3.1.0')
 
     // https://mvnrepository.com/artifact/javax.servlet/jstl
@@ -34,6 +38,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
+
+compileJava.ajc.options.compilerArgs = ["-sourceroots", sourceSets.main.java.sourceDirectories.getAsPath()]
 
 test {
     useJUnitPlatform()

@@ -11,11 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @WebServlet("/add-product")
 public class AddProductServlet extends HttpServlet {
-    private static final AtomicLong idGenerator = new AtomicLong(1L);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,20 +50,17 @@ public class AddProductServlet extends HttpServlet {
                 context.setAttribute("products", products);
             }
 
-            long newId = idGenerator.getAndIncrement();
-            long finalNewId = newId;
-            while (products.stream()
-                    .anyMatch(p -> p.getId() == finalNewId)) {
-                newId = idGenerator.getAndIncrement();
-            }
+            long maxId = products.stream().mapToLong(Product::getId).max().orElseThrow();
+
             Product product = new Product(
-                    newId,
+                    maxId + 1,
                     name,
                     description,
                     price
             );
 
             products.add(product);
+            context.setAttribute("products", products);
             resp.sendRedirect("/shop/catalog");
     } catch (NumberFormatException e) {
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Некорректный формат");}
