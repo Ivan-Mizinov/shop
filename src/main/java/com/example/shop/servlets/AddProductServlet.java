@@ -28,12 +28,12 @@ public class AddProductServlet extends HttpServlet {
         String priceStr = req.getParameter("price");
 
         if (name == null || name.trim().isEmpty()) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Название товара не может быть пустым");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Name is required");
             return;
         }
 
         if (priceStr == null || priceStr.trim().isEmpty()) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Цена товара не может быть пустой");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Price is required");
             return;
         }
 
@@ -60,7 +60,7 @@ public class AddProductServlet extends HttpServlet {
             context.setAttribute("products", products);
             resp.sendRedirect("/shop/catalog");
     } catch (NumberFormatException e) {
-        resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Некорректный формат");}
+        resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid price format");}
     }
 
 }

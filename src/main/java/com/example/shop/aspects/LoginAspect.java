@@ -42,7 +42,7 @@ public class LoginAspect {
         HttpSession session = request.getSession(false);
 
         User user = (User) session.getAttribute("user");
-        String username = user != null ? user.getUsername() : "null";
+        String username = user != null ? user.getUsername() : "Unauthorised user";
 
         String name = request.getParameter("name");
         String description = request.getParameter("description");

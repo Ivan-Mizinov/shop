@@ -38,14 +38,19 @@ public class CartServlet extends HttpServlet {
                 cartService.addProduct(req, getServletContext());
                 resp.sendRedirect("/shop/catalog.jsp");
             } catch (ServletException e) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Товар не найден");
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
             }
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        cartService.removeProduct(req, resp);
-        resp.sendRedirect("/shop/cart");
+        try {
+            cartService.removeProduct(req, resp);
+            resp.sendRedirect("/shop/cart");
+        } catch (Exception e) {
+            req.setAttribute("error", "Error while deleting product: " + e.getMessage());
+            req.getRequestDispatcher("/cart.jsp").forward(req, resp);
+        }
     }
 }

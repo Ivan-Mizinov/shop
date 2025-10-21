@@ -44,7 +44,7 @@ public class AuthFilter implements Filter {
         }
 
         if (uri.contains("/add_product") && !user.getRole().equals("admin")) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Доступ запрещен");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
             return;
         }
 

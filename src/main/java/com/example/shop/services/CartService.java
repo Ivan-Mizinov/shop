@@ -31,7 +31,7 @@ public class CartService {
             cart.addProduct(selectedProduct);
             session.setAttribute("cart", cart);
         } else {
-            throw new ServletException("Товар не найден");
+            throw new ServletException("Product not found");
         }
     }
 
@@ -46,11 +46,11 @@ public class CartService {
             cart.removeProduct(productId);
             session.setAttribute("cart", cart);
         } else {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Корзина пуста");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Cart are empty");
         }
     }
 
-    private Product findProductById(List<Product> products, Long productId) {
+    public Product findProductById(List<Product> products, Long productId) {
         for (Product product : products) {
             if (productId.equals(product.getId())) {
                 return product;
