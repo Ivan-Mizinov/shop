@@ -1,5 +1,6 @@
 package com.example.shop;
 
+import com.example.shop.model.Currency;
 import com.example.shop.model.Product;
 import com.example.shop.model.User;
 
@@ -20,8 +21,8 @@ public class AppListener implements ServletContextListener {
         users.add(new User("admin1", "admin1", "admin"));
 
         List<Product> products = new ArrayList<>();
-        products.add(new Product(1L, "Banana", "Tasty yellow fruit", 50.0));
-        products.add(new Product(2L, "Apple", "Fresh red apple", 25.0));
+        products.add(new Product(1L, "Banana", "Tasty yellow fruit", new Currency("RUB", 50.0)));
+        products.add(new Product(2L, "Apple", "Fresh red apple",  new Currency("RUB", 25.0)));
 
         ServletContext servletContext = sce.getServletContext();
         servletContext.setAttribute("products", products);

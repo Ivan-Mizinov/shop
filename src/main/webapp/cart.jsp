@@ -71,7 +71,7 @@
         Общая сумма:
         <c:set var="total" value="0"/>
         <c:forEach items="${cart}" var="product">
-            <c:set var="total" value="${total + product.price}"/>
+            <c:set var="total" value="${total + product.priceAmount}"/>
         </c:forEach>
             ${total} руб.
     </div>

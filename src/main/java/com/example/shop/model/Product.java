@@ -6,12 +6,19 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private Double price;
+    private Currency price;
 
     public Product() {
     }
 
     public Product(Long id, String name, String description, Double price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = new Currency("RUB", price);
+    }
+
+    public Product(Long id, String name, String description, Currency price) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -42,11 +49,15 @@ public class Product {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public Currency getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public Double getPriceAmount() {
+        return price.getAmount();
+    }
+
+    public void setPrice(Currency price) {
         this.price = price;
     }
 
