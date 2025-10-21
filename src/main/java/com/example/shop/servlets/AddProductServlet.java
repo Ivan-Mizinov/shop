@@ -1,6 +1,9 @@
 package com.example.shop.servlets;
 
+import com.example.shop.model.AddProductEvent;
 import com.example.shop.model.Product;
+import com.example.shop.repository.InContextProductRepository;
+import com.example.shop.repository.ProductRepository;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,11 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/add-product")
 public class AddProductServlet extends HttpServlet {
+
+    private ProductRepository productRepository;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,46 +24,29 @@ public class AddProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ServletContext context = req.getServletContext();
+        productRepository = new InContextProductRepository(context);
 
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        String priceStr = req.getParameter("price");
+        Double price = Double.parseDouble(req.getParameter("price"));
 
-        if (name == null || name.trim().isEmpty()) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Name is required");
-            return;
-        }
+        Product product = new Product(name, description, price);
+        productRepository.add(product);
 
-        if (priceStr == null || priceStr.trim().isEmpty()) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Price is required");
-            return;
-        }
+        AddProductEvent event = convertToEvent(product,req.getSession(false).getAttribute("user"));
 
-        try {
-            Double price = Double.parseDouble(priceStr);
-            ServletContext context = req.getServletContext();
+        publishProduct(event);
+        resp.sendRedirect("/shop/catalog");
+    }
 
-            List<Product> products = (List<Product>) context.getAttribute("products");
-            if (products == null) {
-                products = new ArrayList<>();
-                context.setAttribute("products", products);
-            }
+    private AddProductEvent convertToEvent(Product product, Object user) {
+        return new AddProductEvent();
+    }
 
-            long maxId = products.stream().mapToLong(Product::getId).max().orElseThrow();
-
-            Product product = new Product(
-                    maxId + 1,
-                    name,
-                    description,
-                    price
-            );
-
-            products.add(product);
-            context.setAttribute("products", products);
-            resp.sendRedirect("/shop/catalog");
-    } catch (NumberFormatException e) {
-        resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid price format");}
+    private void publishProduct(AddProductEvent event) {
+        System.out.println(event);
     }
 
 }

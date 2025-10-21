@@ -11,6 +11,12 @@ public class Product {
     public Product() {
     }
 
+    public Product(String name, String description, Double price) {
+        this.name = name;
+        this.description = description;
+        this.price = new Currency("RUB", price);
+    }
+
     public Product(Long id, String name, String description, Double price) {
         this.id = id;
         this.name = name;
