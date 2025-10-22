@@ -1,6 +1,10 @@
 package com.example.shop.model;
 
+import java.util.Objects;
+import java.util.UUID;
+
 public class User {
+    private Long id;
     private String username;
     private String password;
     private String role;
@@ -8,10 +12,19 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String role) {
+    public User(Long id, String username, String password, String role) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -36,5 +49,17 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, role);
     }
 }

@@ -35,7 +35,7 @@
                         ${product.description}
                 </div>
                 <div class="product-price">
-                        ${product.price} ₽
+                        ${product.priceAmount} ₽
                 </div>
                 <form action="/shop/cart" method="POST" style="margin-top: 10px;">
                     <input type="hidden" name="productId" value="${product.id}">
