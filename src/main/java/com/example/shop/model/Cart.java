@@ -6,7 +6,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Cart {
+    private String customerName;
     private final Map<Product, Integer> items = new HashMap<>();
+
+    public Cart() {
+    }
+
+    public Cart(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
     public void addProduct(Product product) {
         items.put(product, items.getOrDefault(product, 0) + 1);
