@@ -23,10 +23,10 @@ public class Cart {
     }
 
     public void addProduct(Product product) {
-        for (OrderItem item : items) {
+        for (int i = 0; i < items.size(); i++) {
+            OrderItem item = items.get(i);
             if (item.getProduct().getId().equals(product.getId())) {
-                item = new OrderItem(item.getProduct(), item.getQuantity() + 1);
-                items.set(items.indexOf(item), item);
+                items.set(i, new OrderItem(item.getProduct(), item.getQuantity() + 1));
                 return;
             }
         }
