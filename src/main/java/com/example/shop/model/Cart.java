@@ -1,13 +1,11 @@
 package com.example.shop.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Cart {
     private String customerName;
-    private final Map<Product, Integer> items = new HashMap<>();
+    private final List<OrderItem> items = new ArrayList<>();
 
     public Cart() {
     }
@@ -25,17 +23,25 @@ public class Cart {
     }
 
     public void addProduct(Product product) {
-        items.put(product, items.getOrDefault(product, 0) + 1);
+        for (OrderItem item : items) {
+            if (item.getProduct().getId().equals(product.getId())) {
+                item = new OrderItem(item.getProduct(), item.getQuantity() + 1);
+                items.set(items.indexOf(item), item);
+                return;
+            }
+        }
+        items.add(new OrderItem(product, 1));
     }
 
     public void removeProduct(Long productId) {
-        for (Map.Entry<Product, Integer> entry : items.entrySet()) {
-            if (entry.getKey().getId().equals(productId)) {
-                int currentQuantity = entry.getValue();
+        for (int i = 0; i < items.size(); i++) {
+            OrderItem item = items.get(i);
+            if (item.getProduct().getId().equals(productId)) {
+                int currentQuantity = item.getQuantity();
                 if (currentQuantity > 1) {
-                    items.put(entry.getKey(), currentQuantity - 1);
+                    items.set(i, new OrderItem(item.getProduct(), currentQuantity - 1));
                 } else {
-                    items.remove(entry.getKey());
+                    items.remove(i);
                 }
                 break;
             }
@@ -44,11 +50,15 @@ public class Cart {
 
     public List<Product> getProducts() {
         List<Product> result = new ArrayList<>();
-        for (Map.Entry<Product, Integer> entry : items.entrySet()) {
-            for (int i = 0; i < entry.getValue(); i++) {
-                result.add(entry.getKey());
+        for (OrderItem item : items) {
+            for (int i = 0; i < item.getQuantity(); i++) {
+                result.add(item.getProduct());
             }
         }
         return result;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
     }
 }

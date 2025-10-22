@@ -17,6 +17,15 @@ public class Order {
         this.orderDate = LocalDateTime.now();
     }
 
+    public Order(String customerName, List<OrderItem> items) {
+        this.customerName = customerName;
+        this.orderItems = new ArrayList<>();
+        if (items != null) {
+            this.orderItems.addAll(items);
+        }
+        this.orderDate = LocalDateTime.now();
+    }
+
     public UUID getId() {
         return id;
     }
@@ -29,23 +38,11 @@ public class Order {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
-    }
-
     public List<OrderItem> getOrderItems() {
         return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
     }
 }
