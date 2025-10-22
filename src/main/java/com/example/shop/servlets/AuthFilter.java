@@ -43,8 +43,10 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (uri.contains("/add_product") && !user.getRole().equals("admin")) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+        if (uri.contains("/add-product") && !user.getRole().equals("admin")) {
+            request.setAttribute("error", "Access denied");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
+            dispatcher.forward(request, resp);
             return;
         }
 

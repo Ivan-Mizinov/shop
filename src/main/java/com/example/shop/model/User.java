@@ -1,7 +1,6 @@
 package com.example.shop.model;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class User {
     private Long id;
