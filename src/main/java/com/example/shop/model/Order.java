@@ -38,11 +38,18 @@ public class Order {
         return customerName;
     }
 
+    public void setLogin(String customerName) {
+        this.customerName = customerName;
+    }
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
     public List<OrderItem> getOrderItems() {
         return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

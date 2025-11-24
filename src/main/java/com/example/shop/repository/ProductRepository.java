@@ -8,7 +8,7 @@ public interface ProductRepository {
 
     void add(Product product);
 
-    void get(Long id);
+    Product get(Long id);
 
     List<Product> get();
 }
