@@ -20,7 +20,7 @@ public class AddProductServlet extends HttpServlet {
 
     private ProductService productService;
 
-    public void init() throws ServletException {
+    public void init() {
         ServletContext context = getServletContext();
         ProductRepository productRepository = new InContextProductRepository(context);
         this.productService = new ProductService(productRepository);

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 @Aspect
 public class TransactionAspect {
 
-    @Around("execution(* com.example.shop.services.CartService.*Product(..))")
+    @Around("execution(* com.example.shop.services.CartQueryService.*Product(..))")
     public Object manageTransactions(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpSession session = getSessionFromArgs(joinPoint.getArgs());
         Cart originalCart = (Cart) session.getAttribute("cart");

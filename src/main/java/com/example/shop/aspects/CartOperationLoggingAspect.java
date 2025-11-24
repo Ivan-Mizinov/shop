@@ -2,19 +2,19 @@ package com.example.shop.aspects;
 
 import com.example.shop.model.Product;
 import com.example.shop.model.User;
-import com.example.shop.services.CartService;
+import com.example.shop.query.GetProductQuery;
+import com.example.shop.repository.InContextProductQueryRepository;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Aspect
 public class CartOperationLoggingAspect {
-    private CartService cartService = new CartService();
 
     @Pointcut("execution(* com.example.shop.servlets.CartServlet.doPost(..))")
     public void doCartOperation() {
@@ -24,13 +24,21 @@ public class CartOperationLoggingAspect {
     @After("doCartOperation()")
     public void afterCartOperation(JoinPoint joinPoint) {
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
+        ServletContext context = request.getSession().getServletContext();
+        InContextProductQueryRepository repo = new InContextProductQueryRepository(context);
+
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
         String username = user != null ? user.getUsername() : "Unauthorised user";
 
         Long productId = Long.parseLong(request.getParameter("productId"));
-        List<Product> products = (List<Product>) request.getServletContext().getAttribute("products");
-        Product product = cartService.findProductById(products, productId);
+
+        Product product = repo.findById(new GetProductQuery(productId));
+        if (product == null) {
+            System.out.printf("User %s tried to access non-existent product ID: %d%n", username, productId);
+            return;
+        }
+
         String productName = product.getName();
         String productPrice = product.getPrice().toString();
 
