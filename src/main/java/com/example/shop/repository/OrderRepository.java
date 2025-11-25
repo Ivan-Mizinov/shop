@@ -1,9 +1,9 @@
 package com.example.shop.repository;
 
-import com.example.shop.command.AddOrderCommand;
+import com.example.shop.model.Order;
 
 public interface OrderRepository {
 
-    void addOrder(AddOrderCommand command);
+    void addOrder(Order order);
 
 }

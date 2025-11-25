@@ -1,10 +1,7 @@
 package com.example.shop.servlets;
 
 import com.example.shop.command.AddOrderCommand;
-import com.example.shop.repository.InContextProductRepository;
-import com.example.shop.repository.OrderRepository;
-import com.example.shop.repository.ProductRepository;
-import com.example.shop.repository.ServletContextOrderRepository;
+import com.example.shop.services.OrderService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
@@ -25,13 +22,12 @@ public class OrderServlet extends HttpServlet {
         List<String> productsIds = Arrays.asList(req.getParameterValues("product"));
 
         ServletContext context = req.getServletContext();
-        ProductRepository productRepository = new InContextProductRepository(context);
-        OrderRepository orderRepository = new ServletContextOrderRepository(context, productRepository);
+        OrderService orderService = new OrderService(context);
 
         AddOrderCommand command = new AddOrderCommand();
         command.setUserId(userId);
         command.setProducts(productsIds);
-        orderRepository.addOrder(command);
+        orderService.createOrder(command);
         resp.getWriter().println("Order created");
     }
 }
