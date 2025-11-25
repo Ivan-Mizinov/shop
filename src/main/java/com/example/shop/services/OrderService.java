@@ -14,13 +14,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderService {
-    private final ServletContext context;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final OrderStore orderStore;
 
     public OrderService(ServletContext context) {
-        this.context = context;
         this.orderRepository = new ServletContextOrderRepository(context);
         this.productRepository = new InContextProductRepository(context);
         this.orderStore = new InContextOrderStore(context);

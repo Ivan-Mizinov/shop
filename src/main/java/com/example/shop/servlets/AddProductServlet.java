@@ -5,6 +5,7 @@ import com.example.shop.model.AddProductEvent;
 import com.example.shop.model.Product;
 import com.example.shop.repository.InContextProductRepository;
 import com.example.shop.repository.ProductRepository;
+import com.example.shop.services.EventPublisherService;
 import com.example.shop.services.ProductService;
 
 import javax.servlet.ServletContext;
@@ -19,11 +20,13 @@ import java.io.IOException;
 public class AddProductServlet extends HttpServlet {
 
     private ProductService productService;
+    private EventPublisherService eventPublisher;
 
     public void init() {
         ServletContext context = getServletContext();
         ProductRepository productRepository = new InContextProductRepository(context);
-        this.productService = new ProductService(productRepository);
+        this.productService = new ProductService(productRepository, context);
+        this.eventPublisher = new EventPublisherService(context);
     }
 
     @Override
@@ -54,11 +57,8 @@ public class AddProductServlet extends HttpServlet {
             command.setDescription(description);
             command.setPrice(price);
 
-            Product product = productService.createProduct(command);
-
             Object user = req.getSession(false).getAttribute("user");
-            AddProductEvent event = convertToEvent(product, user);
-            publishProduct(event);
+            Product product = productService.createProduct(command);
 
             resp.sendRedirect("/shop/catalog");
         } catch (NumberFormatException e) {
@@ -74,13 +74,4 @@ public class AddProductServlet extends HttpServlet {
 
 
     }
-
-    private AddProductEvent convertToEvent(Product product, Object user) {
-        return new AddProductEvent();
-    }
-
-    private void publishProduct(AddProductEvent event) {
-        System.out.println(event);
-    }
-
 }

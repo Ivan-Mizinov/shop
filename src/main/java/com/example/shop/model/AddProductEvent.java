@@ -1,16 +1,36 @@
 package com.example.shop.model;
 
-public class AddProductEvent {
+import java.time.Instant;
+import java.util.UUID;
 
-    private String user;
+public class AddProductEvent {
+    private UUID id;
+    private Instant createdAt;
+    private String userId;
     private Product product;
 
-    public String getUser() {
-        return user;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Product getProduct() {
