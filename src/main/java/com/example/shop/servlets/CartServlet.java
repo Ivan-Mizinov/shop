@@ -73,7 +73,7 @@ public class CartServlet extends HttpServlet {
     private CartCommandService getCartCommandService(HttpServletRequest req) {
         ServletContext context = req.getServletContext();
         CartCommandRepository repo = new InContextCartCommandRepository(context);
-        return new CartCommandService(repo);
+        return new CartCommandService(repo, context);
     }
 
     @Override
