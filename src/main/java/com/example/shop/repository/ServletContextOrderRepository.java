@@ -12,6 +12,9 @@ public class ServletContextOrderRepository implements OrderRepository {
 
     public ServletContextOrderRepository(ServletContext servletContext) {
         this.context = servletContext;
+        if (context.getAttribute("orders") == null) {
+            context.setAttribute("orders", new ArrayList<Order>());
+        }
     }
 
     @Override

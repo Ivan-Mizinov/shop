@@ -5,9 +5,7 @@ import com.example.shop.model.Order;
 import com.example.shop.model.OrderEvent;
 import com.example.shop.model.OrderItem;
 import com.example.shop.model.Product;
-import com.example.shop.repository.OrderRepository;
-import com.example.shop.repository.OrderStore;
-import com.example.shop.repository.ProductRepository;
+import com.example.shop.repository.*;
 
 import javax.servlet.ServletContext;
 import java.time.Instant;
@@ -17,12 +15,15 @@ import java.util.UUID;
 
 public class OrderService {
     private final ServletContext context;
-    private OrderRepository orderRepository;
-    private ProductRepository productRepository;
-    private OrderStore orderStore;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final OrderStore orderStore;
 
     public OrderService(ServletContext context) {
         this.context = context;
+        this.orderRepository = new ServletContextOrderRepository(context);
+        this.productRepository = new InContextProductRepository(context);
+        this.orderStore = new InContextOrderStore(context);
     }
 
     public void createOrder(AddOrderCommand command) {
